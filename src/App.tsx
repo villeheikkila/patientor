@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import { Button, Divider, Header, Container } from "semantic-ui-react";
 
 import { apiBaseUrl } from "./constants";
-import { patientListFromApi, setPatientList, useStateValue } from "./state";
+import { diagnosesFromApi, patientListFromApi, setDiagnoseList, setPatientList, useStateValue } from "./state";
 
 import PatientListPage from "./PatientListPage";
 import PatientPage from "./PatientPage";
@@ -14,6 +14,7 @@ const App = () => {
   React.useEffect(() => {
     void axios.get<void>(`${apiBaseUrl}/ping`);
     void patientListFromApi().then(patients => dispatch(setPatientList(patients)));
+    void diagnosesFromApi().then(diagnoses => dispatch(setDiagnoseList(diagnoses)));
   }, [dispatch]);
 
   return (

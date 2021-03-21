@@ -2,16 +2,18 @@ import axios from "axios";
 import React, { createContext, useContext, useReducer } from "react";
 import { PatientFormValues } from "../AddPatientModal/AddPatientForm";
 import { apiBaseUrl } from "../constants";
-import { Patient } from "../types";
+import { DiagnoseState, Diagnosis, Patient } from "../types";
 
 import { Action } from "./reducer";
 
 export type State = {
-  patients: { [id: string]: Patient };
+  patients: { [id: string]: Patient },
+  diagnoses: DiagnoseState
 };
 
 const initialState: State = {
-  patients: {}
+  patients: {},
+  diagnoses: {},
 };
 
 export const StateContext = createContext<[State, React.Dispatch<Action>]>([
@@ -41,6 +43,13 @@ export const useStateValue = () => useContext(StateContext);
 export const patientListFromApi = async () => {
   const { data } = await axios.get<Patient[]>(
     `${apiBaseUrl}/patients`
+  );
+  return data;
+};
+
+export const diagnosesFromApi = async () => {
+  const { data } = await axios.get<Diagnosis[]>(
+    `${apiBaseUrl}/diagnosis`
   );
   return data;
 };
