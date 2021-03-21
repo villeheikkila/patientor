@@ -3,6 +3,7 @@ import { Container, Table } from "semantic-ui-react";
 import HealthRatingBar from "../components/HealthRatingBar";
 import { useParams } from "react-router";
 import { addPatient, patientFromApi, useStateValue } from "../state";
+import { Entry } from "../types";
 
 const PatientPage = () => {
     const { id } = useParams<{ id: string }>();
@@ -10,7 +11,7 @@ const PatientPage = () => {
     const [{ patients }, dispatch] = useStateValue();
     React.useEffect(() => {
         if (patients[id]?.ssn === undefined) {
-            void patientFromApi(id).then(patient => dispatch(addPatient(patient)));
+            void patientFromApi(id).then((patient) => dispatch(addPatient(patient)));
         }
     }, [dispatch]);
 
@@ -46,7 +47,6 @@ const PatientPage = () => {
                         <Table.Cell>{patient.gender}</Table.Cell>
                     </Table.Row>
 
-
                     <Table.Row key={patient.ssn}>
                         <Table.Cell>SSN</Table.Cell>
                         <Table.Cell>{patient.ssn}</Table.Cell>
@@ -66,8 +66,40 @@ const PatientPage = () => {
                     </Table.Row>
                 </Table.Body>
             </Table>
-        </div >
+
+            {patient?.entries?.map((entry) => (
+                <PatientEntry key={entry.id} entry={entry} />
+            ))}
+        </div>
     );
 };
 
+const PatientEntry = ({ entry }: { entry: Entry }) => {
+    switch (entry.type) {
+        case "Hospital": {
+            return (
+                <div>
+                    <b>{entry.date}</b> <p>{entry.description}</p>{" "}
+                    <ul>
+                        {entry?.diagnosisCodes?.map((code) => (
+                            <li key={code}>{code}</li>
+                        ))}
+                    </ul>
+                </div>
+            );
+        }
+        case "OccupationalHealthcare": {
+            return (
+                <div>
+                    <b>{entry.date}</b> <p>{entry.description}</p>{" "}
+                    <ul>
+                        {entry?.diagnosisCodes?.map((code) => (
+                            <li key={code}>{code}</li>
+                        ))}
+                    </ul>
+                </div>
+            );
+        }
+    }
+};
 export default PatientPage;
