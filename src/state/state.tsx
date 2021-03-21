@@ -1,4 +1,7 @@
+import axios from "axios";
 import React, { createContext, useContext, useReducer } from "react";
+import { PatientFormValues } from "../AddPatientModal/AddPatientForm";
+import { apiBaseUrl } from "../constants";
 import { Patient } from "../types";
 
 import { Action } from "./reducer";
@@ -32,4 +35,27 @@ export const StateProvider: React.FC<StateProviderProps> = ({
     </StateContext.Provider>
   );
 };
+
 export const useStateValue = () => useContext(StateContext);
+
+export const patientListFromApi = async () => {
+  const { data } = await axios.get<Patient[]>(
+    `${apiBaseUrl}/patients`
+  );
+  return data;
+};
+
+export const patientFromApi = async (id: string) => {
+  const { data } = await axios.get<Patient>(
+    `${apiBaseUrl}/patients/${id}`
+  );
+  return data;
+};
+
+export const createPatient = async (values: PatientFormValues) => {
+  const { data } = await axios.post<Patient>(
+    `${apiBaseUrl}/patients`,
+    values);
+
+  return data;
+};

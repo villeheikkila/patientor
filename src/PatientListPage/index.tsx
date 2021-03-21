@@ -1,13 +1,10 @@
 import React from "react";
-import axios from "axios";
 import { Container, Table, Button } from "semantic-ui-react";
-
 import { PatientFormValues } from "../AddPatientModal/AddPatientForm";
 import AddPatientModal from "../AddPatientModal";
 import { Patient } from "../types";
-import { apiBaseUrl } from "../constants";
 import HealthRatingBar from "../components/HealthRatingBar";
-import { useStateValue } from "../state";
+import { addPatient, createPatient, useStateValue } from "../state";
 import { Link } from "react-router-dom";
 
 const PatientListPage = () => {
@@ -23,13 +20,9 @@ const PatientListPage = () => {
     setError(undefined);
   };
 
-  const submitNewPatient = async (values: PatientFormValues) => {
+  const submitNewPatient = (values: PatientFormValues) => {
     try {
-      const { data: newPatient } = await axios.post<Patient>(
-        `${apiBaseUrl}/patients`,
-        values
-      );
-      dispatch({ type: "ADD_PATIENT", payload: newPatient });
+      void createPatient(values).then(patient => dispatch(addPatient(patient)));
       closeModal();
     } catch (e) {
       console.error(e.response?.data || 'Unknown Error');

@@ -1,30 +1,16 @@
 import React from "react";
-import axios from "axios";
 import { Container, Table } from "semantic-ui-react";
-import { Patient } from "../types";
-import { apiBaseUrl } from "../constants";
 import HealthRatingBar from "../components/HealthRatingBar";
 import { useParams } from "react-router";
-import { useStateValue } from "../state";
+import { addPatient, patientFromApi, useStateValue } from "../state";
 
 const PatientPage = () => {
     const { id } = useParams<{ id: string }>();
 
     const [{ patients }, dispatch] = useStateValue();
     React.useEffect(() => {
-
         if (patients[id]?.ssn === undefined) {
-
-            const fetchPatient = async () => {
-                try {
-                    const { data } = await axios.get<Patient>(
-                        `${apiBaseUrl}/patients/${id}`);
-                    dispatch({ type: "ADD_PATIENT", payload: data });
-                } catch (e) {
-                    console.error(e);
-                }
-            };
-            void fetchPatient();
+            void patientFromApi(id).then(patient => dispatch(addPatient(patient)));
         }
     }, [dispatch]);
 
