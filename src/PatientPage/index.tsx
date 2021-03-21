@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Card, Container, Table } from "semantic-ui-react";
+import { Button, Container, Table } from "semantic-ui-react";
 import HealthRatingBar from "../components/HealthRatingBar";
 import { useParams } from "react-router";
 import {
@@ -9,10 +9,9 @@ import {
   updateEntryForPatient,
   useStateValue,
 } from "../state";
-import { Diagnose, DiagnoseState, Entry } from "../types";
-import { Icon } from "semantic-ui-react";
 import AddEntryModal from "../AddEntryModal";
 import { HospitalEntryValues } from "../AddEntryModal/AddEntryModal";
+import { PatientEntry } from "./PatientEntry";
 
 const PatientPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -120,70 +119,5 @@ const PatientPage = () => {
     </div>
   );
 };
-
-const PatientEntry = ({
-  entry,
-  diagnoses,
-}: {
-  entry: Entry;
-  diagnoses: DiagnoseState;
-}) => {
-  switch (entry.type) {
-    case "Hospital": {
-      return <HospitalEntry entry={entry} diagnoses={diagnoses} />;
-    }
-    case "OccupationalHealthcare": {
-      return <HealtCheckEntry entry={entry} diagnoses={diagnoses} />;
-    }
-    default:
-      return null;
-  }
-};
-
-const HospitalEntry = ({
-  entry,
-  diagnoses,
-}: {
-  entry: Entry;
-  diagnoses: DiagnoseState;
-}) => (
-  <Card style={{ width: "50rem", padding: "1rem" }}>
-    <div style={{ display: "flex" }}>
-      <h4>{entry.date}</h4> <Icon name="hospital" />
-    </div>
-    <p>{entry.description}</p>{" "}
-    <ul>
-      {entry?.diagnosisCodes?.map((diagnosisCode) => (
-        <li key={diagnosisCode}>
-          {diagnoses[diagnosisCode as keyof Diagnose]?.code}:{" "}
-          {diagnoses[diagnosisCode as keyof Diagnose]?.name}
-        </li>
-      ))}
-    </ul>
-  </Card>
-);
-
-const HealtCheckEntry = ({
-  entry,
-  diagnoses,
-}: {
-  entry: Entry;
-  diagnoses: DiagnoseState;
-}) => (
-  <Card style={{ width: "50rem", padding: "1rem" }}>
-    <div style={{ display: "flex" }}>
-      <h4>{entry.date}</h4> <Icon name="user doctor" />
-    </div>
-    <p>{entry.description}</p>
-    <ul>
-      {entry?.diagnosisCodes?.map((diagnosisCode) => (
-        <li key={diagnosisCode}>
-          {diagnoses[diagnosisCode as keyof Diagnose]?.code}:{" "}
-          {diagnoses[diagnosisCode as keyof Diagnose]?.name}
-        </li>
-      ))}
-    </ul>
-  </Card>
-);
 
 export default PatientPage;

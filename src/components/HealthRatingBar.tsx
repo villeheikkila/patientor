@@ -1,5 +1,5 @@
-import React from 'react';
-import { Rating } from 'semantic-ui-react';
+import React from "react";
+import { Rating } from "semantic-ui-react";
 
 type BarProps = {
   rating: number;
@@ -7,10 +7,10 @@ type BarProps = {
 };
 
 const HEALTHBAR_TEXTS = [
-  'The patient is in great shape',
-  'The patient has a low risk of getting sick',
-  'The patient has a high risk of getting sick',
-  'The patient has a diagnosed condition',
+  "The patient is in great shape",
+  "The patient has a low risk of getting sick",
+  "The patient has a high risk of getting sick",
+  "The patient has a diagnosed condition",
 ];
 
 const HealthRatingBar = ({ rating, showText }: BarProps) => {

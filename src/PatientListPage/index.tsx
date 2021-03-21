@@ -22,11 +22,13 @@ const PatientListPage = () => {
 
   const submitNewPatient = (values: PatientFormValues) => {
     try {
-      void createPatient(values).then(patient => dispatch(addPatient(patient)));
+      void createPatient(values).then((patient) =>
+        dispatch(addPatient(patient))
+      );
       closeModal();
     } catch (e) {
-      console.error(e.response?.data || 'Unknown Error');
-      setError(e.response?.data?.error || 'Unknown error');
+      console.error(e.response?.data || "Unknown Error");
+      setError(e.response?.data?.error || "Unknown error");
     }
   };
 
@@ -47,7 +49,9 @@ const PatientListPage = () => {
         <Table.Body>
           {Object.values(patients).map((patient: Patient) => (
             <Table.Row key={patient.id}>
-              <Table.Cell><Link to={`/patients/${patient.id}`} >{patient.name}</Link></Table.Cell>
+              <Table.Cell>
+                <Link to={`/patients/${patient.id}`}>{patient.name}</Link>
+              </Table.Cell>
               <Table.Cell>{patient.gender}</Table.Cell>
               <Table.Cell>{patient.occupation}</Table.Cell>
               <Table.Cell>
