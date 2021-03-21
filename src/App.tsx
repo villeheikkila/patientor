@@ -35,10 +35,12 @@ const App = () => {
           <Button as={Link} to="/" primary>
             Home
           </Button>
+          <PatientListPage />
+
           <Divider hidden />
           <Switch>
             <Route path="/patients/:id">
-              <PatientPage />
+              <PatientListPage />
             </Route>
           </Switch>
         </Container>
